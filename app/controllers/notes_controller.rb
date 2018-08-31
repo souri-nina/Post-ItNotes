@@ -13,18 +13,33 @@ class NotesController < ApplicationController
   end
 
   def create
-    @note = Note.new(notes_params)
+    @note = Note.new(note_params)
     
     if @note.save 
-      redirect_to notes_path
+      redirect_to note_path
     else
       render :new
     end  
+
+    def edit
+      @note = Note.find(params[:id])
+    end
+
+    def update
+      @note = Note.find(params[:id])
+
+      if @note.update(note_params)
+        redirect_to note_path(@note.id)
+      else
+        render :edit
+      end
+    end
+
   end
 
   private
 
-    def notes_params
+    def note_params
       params.require(:note).permit(:postIts, :subject, :body)
     end
 
